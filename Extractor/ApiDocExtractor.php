@@ -275,13 +275,6 @@ class ApiDocExtractor
                 }
             }
 
-            if ('PUT' === $method) {
-                // All parameters are optional with PUT (update)
-                array_walk($parameters, function($val, $key) use (&$data) {
-                    $parameters[$key]['required'] = false;
-                });
-            }
-
             $annotation->setParameters($parameters);
         }
 
@@ -299,6 +292,16 @@ class ApiDocExtractor
             }
 
             $annotation->setResponse($response);
+        }
+
+        $httpMethods = $route->getMethods();
+        if (1 === count($httpMethods) && 'PUT' === $httpMethods[0]) {
+            $parameters = $annotation->getParameters();
+            // All parameters are optional with PUT (update)
+            array_walk($parameters, function (&$val, $key) {
+                $val['required'] = false;
+            });
+            $annotation->setParameters($parameters);
         }
 
         // requirements

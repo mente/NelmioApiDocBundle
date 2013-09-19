@@ -275,6 +275,14 @@ class ApiDoc
     }
 
     /**
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
      * @param string $name
      * @param array  $parameter
      */
